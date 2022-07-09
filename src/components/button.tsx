@@ -5,7 +5,7 @@ import { Button as ButtonComponent, ButtonProps } from "baseui/button";
 import { getColorByKind } from "./utils";
 
 interface ButtonPropsI extends ButtonProps {
-  color: "primary" | "secondary";
+  color?: "primary" | "secondary";
   onClick?: any;
   label: string;
 }

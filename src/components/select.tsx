@@ -25,7 +25,7 @@ export default function Select({
   ...props
 }: SelectPropsI) {
   return (
-    <Block>
+    <Block width="100%">
       <LabelMedium
         color="textSecondary"
         $style={{ textTransform: "capitalize" }}
@@ -44,6 +44,11 @@ export default function Select({
         placeholder={placeHolder}
         onChange={onChange}
         overrides={{
+          Root: {
+            style: ({ $theme }) => ({
+              marginTop: "2px",
+            }),
+          },
           ControlContainer: {
             style: ({ $theme }) => ({
               borderRadius: $theme.borders.radius300,
