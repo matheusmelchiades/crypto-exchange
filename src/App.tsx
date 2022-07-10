@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Block } from "baseui/block";
 
@@ -12,7 +12,7 @@ import Button from "./components/button";
 import DatePicker from "./components/datepicker";
 import Table from "./components/table";
 import { convertDate } from "./components/utils";
-import data from "./data";
+import api from "./services/api";
 
 const TYPE_DATA = {
   live_price: "Live Price",
@@ -58,6 +58,16 @@ const config = [
 ];
 
 export default function App() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const { data: allData = [] } = await api.get("/");
+
+      setData(allData);
+    })();
+  }, []);
+
   return (
     <Block>
       <Topbar />
