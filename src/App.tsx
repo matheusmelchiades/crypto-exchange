@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { Block } from "baseui/block";
 
@@ -13,6 +13,7 @@ import DatePicker from "./components/datepicker";
 import Table from "./components/table";
 import { convertDate } from "./components/utils";
 import api from "./services/api";
+import socket from "./services/socket";
 
 const TYPE_DATA = {
   live_price: "Live Price",
@@ -60,12 +61,27 @@ const config = [
 export default function App() {
   const [data, setData] = useState([]);
 
-  useEffect(() => {
-    (async () => {
+  const requestData = async () => {
+    try {
       const { data: allData = [] } = await api.get("/");
 
       setData(allData);
-    })();
+    } catch (err) {
+      setData([]);
+    }
+  };
+
+  useEffect(() => {
+    const pathSocket = "update";
+    requestData().then().catch();
+
+    socket.on(pathSocket, () => {
+      requestData().then().catch();
+    });
+
+    return () => {
+      socket.off(pathSocket);
+    };
   }, []);
 
   return (
